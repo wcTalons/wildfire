@@ -1,0 +1,517 @@
+{
+	"name": "reptar",
+	"level": { "value": 0, "exp": 0 },
+	"gender": "male",
+	"age": 0,
+	"height": 0,
+	"weight": 0,
+	"alignment": { "type": "netural", "side": "netural" },
+	"deity": "",
+	"affiliations": [
+		{ "name": "" }
+	],
+	"race": {
+		"name": "dragonborn",
+		"size": "medium",
+		"speed": 6,
+		"visions": ["normal"],
+		"languages": ["common", "draconic"],
+		"abilities": [
+			{ "name": "stength", "value": 2 },
+			{ "name": "charisma", "value": 2 }
+		],
+		"skills": [
+			{ "name": "history", "value": 2 },
+			{ "name": "intimidate", "value": 2 },
+		],
+		"features": [
+			{ 
+				"name": "dragonborn_fury",
+				"label": "Dragonborn Fury",
+				"type": "passive",
+				"effect": {
+					"type": "bonus",
+					"field_path": "powers.*.attack.value",
+					"value": 1
+				},
+				"self_trigger": [
+					{ 
+						"check": {
+							"type": "eq",
+							"value": {
+								"func": "*",
+								"values": [
+									{ "field_path": "health.max.value" },
+									{ "value": 0.5 }
+								]
+							}
+						},
+						"source": { "field_path": "health.current" }
+					}
+				]
+			},
+			{
+				"name": "draconic_heritage",
+				"label": "Draconic Heritage",
+				"type": "passive",
+				"effect": {
+					"type": "bonus",
+					"value": { "field_path": "abilities.mod.name/con.value" },
+					"source": { "field_path": "health.surge.value" }
+				},
+			},
+			{
+				"type": "power",
+				"data": {
+					"name": "dragon_breath",
+					"label": "Dragon Breath",
+					"type": "encounter",
+					"action": "minor",
+					"range": { "type": "close blast", "distance": 3 },
+					"keywords": ["fire"],
+					"target": "all creatures",
+					"attack": {
+						"vs": "ref",
+						"value": {
+							"calc": {
+								"func": "+",
+								"values": [
+									{ "field_path": "abilities.mod.name/con.value" },
+									{ "value": 2 }
+								]
+							}
+						}
+					},
+					"hit": {
+						"dmg": {
+							"die": {
+								"sides": 6,
+								"amount": 1
+							},
+							"value": {
+								"calc": {
+									"func": "+",
+									"values": [
+										{ "field_path": "abilities.mod.name/con.value" }
+									]
+								}
+							},
+						},
+						"details": { "text": "" }
+					}
+				}
+			}
+		]
+	},
+	"class": {
+		"name": "Bard",
+		"defenses": [
+			{ "name": "ref", "value": 1 },
+			{ "name": "will", "value": 1 }
+		],
+		"health": {
+			"base": {
+				"value": {
+					"calc": {
+						"func": "+",
+						"values": [
+							{ "field_path": "abilities.ability.name/constitution.value" },
+							{ "value": 12 }
+						]
+					},
+				}
+			},
+			"level": {
+				"value": {
+					"calc": {
+						"func": "*",
+						"values": [
+							{ "field_path": "level.value" },
+							{ "value": 5 }
+						]
+					},
+				}
+			},
+			"surge": {
+				"value": {
+					"calc": {
+						"func": "+",
+						"values": [
+							{ "field_path": "abilities.mod.name/con.value" },
+							{ "value": 7 }
+						]
+					},
+				}
+			}
+		},
+		"features": [
+			{
+				"type": "power",
+				"data": {
+					"name": "virtue_valor",
+					"label": "Virtue of Valor",
+					"type": "at-will",
+					"action": "free",
+					"range": { "type": "close burst", "distance": 5 },
+					"keywords": ["healing"],
+					"target": "ally",
+					"trigger": {
+						"text": "ally reduces an enemy to 0 HP or ally bloodies an enemy"
+					},
+					"effect": {
+						"text": "grant temp hp to ally. one once per round",
+						"value": {
+							"calc": {
+								"func": "+",
+								"values": [
+									{ "field_path": "abilities.mod.name/con.value" },
+									{ "value": 1 }
+								]
+							},
+						}
+					}
+				}
+			},
+			{
+				"name": "skill_versatility",
+				"label": "Skill Versatility",
+				"type": "passive",
+				"effect": {
+					"type": "bonus",
+					"value": 1,
+					"source": { "field_path": "skills.*.bonuses" },
+					"requirements": [
+						{ "check": { "type": "bool", "value": false }, "source": { "field_path": "name/training" } }
+					]
+				}
+			},
+			{
+				"label": "Song of Rest",
+				"name": "song_rest",
+				"type": "passive",
+				"details": {
+					"text": "during an extended rest characters that spend healing surges gains additional HP",
+					"value": { "field_path": "abilities.mod.name/cha.value" }
+				}
+			},
+			{
+				"type": "power",
+				"data": {
+					"label": "Majestic Word",
+					"name": "majestic_word",
+					"type": "encounter",
+					"action": "minor",
+					"keywords": ["arcane", "healing"],
+					"range": { "type": "close burst", "distance": 5 },
+					"target": "self or ally",
+					"effect": {
+						"type": "heal",
+						"text": "target spends surge and gains additional HP. you can slide the target 1 square",
+						"value": { "field_path": "abilities.mod.name/cha.value" }
+					},
+					"special": {
+						"text": "this power can be used 2 per encounter but only 1 per round"
+					}
+				}
+			},
+			{
+				"type": "power",
+				"data": {
+					"label": "Words of Friendship",
+					"name": "words_friendship",
+					"type": "encounter",
+					"action": "minor",
+					"keywords": ["arcane"],
+					"target": "self",
+					"effect": {
+						"type": "bonus",
+						"value": {
+							"calc": {
+								"func": "+",
+								"values": [
+									{ "field_path": "skills.name/diplomacy" },
+									{ "value": 5 }
+								]
+							},
+						},
+						"text": "your next Diplomacy check will gain a bonus."
+					}
+				}
+			}
+		]
+	},
+	"feats": [
+		{
+			"name": "improved_majestic_word",
+			"label": "Improved Majestic Word",
+			"effect": {
+				"type": "bonus",
+				"value": { "field_path": "abilities.mod.name/cha.value" },
+				"text": "target gains additional temp HP",
+				"source": { "field_path": "class.features.data.name/majestic_word" }
+			}
+		},
+		{
+			"name": "toughness",
+			"label": "Toughness",
+			"effect": {
+				"type": "bonus",
+				"value": 5,
+				"text": "Max HP increase",
+				"source": { "field_path": "health.max.value" }
+			}
+		},
+		{
+			"name": "improved_initiative",
+			"label": "Improved Initiative",
+			"effect": {
+				"type": "bonus",
+				"value": 4,
+				"text": "Bonus to Initiative",
+				"source": { "field_path": "senses.name/initiative.value" }
+			}
+		}
+	],
+	"abilities": [
+		{
+			"ability": { "name": "stength", "value": 0, "bonuses": [ { "field_path": "race.abilities.name/stength.value" } ] },
+			"mod": { "name": "str", "value": 0 }
+		},
+		{
+			"ability": { "name": "constitution", "value": 0 },
+			"mod": { "name": "con", "value": 0 }
+		},
+		{
+			"ability": { "name": "dexterity", "value": 0 },
+			"mod": { "name": "dex", "value": 0 }
+		},
+		{
+			"ability": { "name": "intelligence", "value": 0 },
+			"mod": { "name": "int", "value": 0 }
+		},
+		{
+			"ability": { "name": "wisdom", "value": 0 },
+			"mod": { "name": "wis", "value": 0 }
+		},
+		{
+			"ability": { "name": "charisma", "value": 0, "bonuses": [ { "field_path": "race.abilities.name/charisma.value" } ] },
+			"mod": { "name": "cha", "value": 0 }
+		}
+	],
+	"defenses": [
+		{
+			"name": "ac", "value": 0, "base": 10, "armour": 0,
+			"bonuses": [
+				{ "name": "lvl", "value": { "calc": { "func": "*", "values": [ { "field_path": "level.value" }, { "value": 0.5 } ] } } },
+				{ "name": "ability", "value": { "field_path": "abilities.mod.name/int.value" } },
+				{ "name": "equipment", "value": { "field_path": "equipment.name", "field_value": "" } },
+			]
+		},
+		{
+			"name": "fort", "value": 0, "base": 10, "armour": 0,
+			"bonuses": [
+				{ "name": "lvl", "value": { "calc": { "func": "*", "values": [ { "field_path": "level.value" }, { "value": 0.5 } ] } } },
+				{ "name": "ability", "value": { "field_path": "abilities.mod.name/con.value" } },
+			]
+		},
+		{
+			"name": "ref", "value": 0, "base": 10, "armour": 0,
+			"bonuses": [
+				{ "name": "lvl", "value": { "calc": { "func": "*", "values": [ { "field_path": "level.value" }, { "value": 0.5 } ] } } },
+				{ "name": "ability", "value": { "field_path": "abilities.mod.name/int.value" } },
+				{ "name": "class", "value": { "field_path": "class.defenses.name/ref.value" } }
+			]
+		},
+		{
+			"name": "will", "value": 0, "base": 10, "armour": 0,
+			"bonuses": [
+				{ "name": "lvl", "value": { "calc": { "func": "*", "values": [ { "field_path": "level.value" }, { "value": 0.5 } ] } } },
+				{ "name": "ability", "value": { "field_path": "abilities.mod.name/cha.value" } },
+				{ "name": "class", "value": { "field_path": "class.defenses.name/will.value" } }
+			]
+		}
+	],
+	"health": {
+		"max": {
+			"value": {
+				"calc": {
+					"func": "+",
+					"values": [
+						{ "field_path": "class.health.base.value" },
+						{ "field_path": "class.health.level.value" },
+						{ "field_path": "feats.name/toughness.effect.value" }
+					]
+				}
+			}
+		},
+		"surge": { 
+			"total": {
+				"value": {
+					"calc": {
+						"func": "+",
+						"values": [
+							{ "field_path": "class.health.surge.value" }
+						]
+					}
+				}
+			},
+			"value": {
+				"calc": {
+					"func": "+",
+					"values": [
+						{ "calc": { "func": "*", "values": [ { "field_path": "health.max.value" }, { "value": 0.25 } ] } },
+						{ "field_path": "draconic_heritage.effect.value" }
+					]
+				}
+			},
+			"current": 0,
+		},
+		"current": 0,
+		"action_points": 1
+	},
+	"skills": [
+		{ "name": "acrobatics", "value": 0,
+			"bonuses": [
+				{ "name": "lvl", "value": { "calc": { "func": "*", "values": [ { "field_path": "level.value" }, { "value": 0.5 } ] } } },
+				{ "name": "ability", "value": { "field_path": "abilities.mod.name/dex.value" } },
+				{ "name": "misc", "value": { "field_path": "class.feaures.name/skill_versatility.effect.value" } }
+			]
+		},
+		{ "name": "arcana", "value": 0,
+			"bonuses": [
+				{ "name": "lvl", "value": { "calc": { "func": "*", "values": [ { "field_path": "level.value" }, { "value": 0.5 } ] } } },
+				{ "name": "ability", "value": { "field_path": "abilities.mod.name/int.value" } },
+				{ "name": "training", "value": 5 },
+			]
+		},
+		{ "name": "athletics", "value": 0,
+			"bonuses": [
+				{ "name": "lvl", "value": { "calc": { "func": "*", "values": [ { "field_path": "level.value" }, { "value": 0.5 } ] } } },
+				{ "name": "ability", "value": { "field_path": "abilities.mod.name/str.value" } },
+				{ "name": "misc", "value": { "field_path": "class.feaures.name/skill_versatility.effect.value" } }
+			]
+		},
+		{ "name": "bluff", "value": 0,
+			"bonuses": [
+				{ "name": "lvl", "value": { "calc": { "func": "*", "values": [ { "field_path": "level.value" }, { "value": 0.5 } ] } } },
+				{ "name": "ability", "value": { "field_path": "abilities.mod.name/cha.value" } },
+				{ "name": "misc", "value": { "field_path": "class.feaures.name/skill_versatility.effect.value" } }
+			]
+		},
+		{ "name": "diplomacy", "value": 0,
+			"bonuses": [
+				{ "name": "lvl", "value": { "calc": { "func": "*", "values": [ { "field_path": "level.value" }, { "value": 0.5 } ] } } },
+				{ "name": "ability", "value": { "field_path": "abilities.mod.name/cha.value" } },
+				{ "name": "training", "value": 5 },
+			]
+		},
+		{ "name": "dungeoneering", "value": 0,
+			"bonuses": [
+				{ "name": "lvl", "value": { "calc": { "func": "*", "values": [ { "field_path": "level.value" }, { "value": 0.5 } ] } } },
+				{ "name": "ability", "value": { "field_path": "abilities.mod.name/wis.value" } },
+				{ "name": "misc", "value": { "field_path": "class.feaures.name/skill_versatility.effect.value" } }
+			]
+		},
+		{ "name": "endurance", "value": 0,
+			"bonuses": [
+				{ "name": "lvl", "value": { "calc": { "func": "*", "values": [ { "field_path": "level.value" }, { "value": 0.5 } ] } } },
+				{ "name": "ability", "value": { "field_path": "abilities.mod.name/con.value" } },
+				{ "name": "misc", "value": { "field_path": "class.feaures.name/skill_versatility.effect.value" } }
+			]
+		},
+		{ "name": "heal", "value": 0,
+			"bonuses": [
+				{ "name": "lvl", "value": { "calc": { "func": "*", "values": [ { "field_path": "level.value" }, { "value": 0.5 } ] } } },
+				{ "name": "ability", "value": { "field_path": "abilities.mod.name/wis.value" } },
+				{ "name": "misc", "value": { "field_path": "class.feaures.name/skill_versatility.effect.value" } }
+			]
+		},
+		{ "name": "history", "value": 0,
+			"bonuses": [
+				{ "name": "lvl", "value": { "calc": { "func": "*", "values": [ { "field_path": "level.value" }, { "value": 0.5 } ] } } },
+				{ "name": "ability", "value": { "field_path": "abilities.mod.name/int.value" } },
+				{ "name": "training", "value": 5 },
+				{ "name": "misc", "value": { "field_path": "race.skills.name/history.value" } }
+			]
+		},
+		{ "name": "insight", "value": 0,
+			"bonuses": [
+				{ "name": "lvl", "value": { "calc": { "func": "*", "values": [ { "field_path": "level.value" }, { "value": 0.5 } ] } } },
+				{ "name": "ability", "value": { "field_path": "abilities.mod.name/wis.value" } },
+				{ "name": "misc", "value": { "field_path": "class.feaures.name/skill_versatility.effect.value" } }
+			]
+		},
+		{ "name": "intimidate", "value": 0,
+			"bonuses": [
+				{ "name": "lvl", "value": { "calc": { "func": "*", "values": [ { "field_path": "level.value" }, { "value": 0.5 } ] } } },
+				{ "name": "ability", "value": { "field_path": "abilities.mod.name/cha.value" } },
+				{ "name": "training", "value": 5 },
+				{ "name": "misc", "value": { "field_path": "race.skills.name/intimidate.value" } }
+			]
+		},
+		{ "name": "nature", "value": 0,
+			"bonuses": [
+				{ "name": "lvl", "value": { "calc": { "func": "*", "values": [ { "field_path": "level.value" }, { "value": 0.5 } ] } } },
+				{ "name": "ability", "value": { "field_path": "abilities.mod.name/wis.value" } },
+				{ "name": "misc", "value": { "field_path": "class.feaures.name/skill_versatility.effect.value" } }
+			]
+		},
+		{ "name": "perception", "value": 0,
+			"bonuses": [
+				{ "name": "lvl", "value": { "calc": { "func": "*", "values": [ { "field_path": "level.value" }, { "value": 0.5 } ] } } },
+				{ "name": "ability", "value": { "field_path": "abilities.mod.name/wis.value" } },
+				{ "name": "misc", "value": { "field_path": "class.feaures.name/skill_versatility.effect.value" } }
+			]
+		},
+		{ "name": "religion", "value": 0,
+			"bonuses": [
+				{ "name": "lvl", "value": { "calc": { "func": "*", "values": [ { "field_path": "level.value" }, { "value": 0.5 } ] } } },
+				{ "name": "ability", "value": { "field_path": "abilities.mod.name/int.value" } },
+				{ "name": "misc", "value": { "field_path": "class.feaures.name/skill_versatility.effect.value" } }
+			]
+		},
+		{ "name": "stealth", "value": 0,
+			"bonuses": [
+				{ "name": "lvl", "value": { "calc": { "func": "*", "values": [ { "field_path": "level.value" }, { "value": 0.5 } ] } } },
+				{ "name": "ability", "value": { "field_path": "abilities.mod.name/dex.value" } },
+				{ "name": "misc", "value": { "field_path": "class.feaures.name/skill_versatility.effect.value" } }
+			]
+		},
+		{ "name": "streetwise", "value": 0,
+			"bonuses": [
+				{ "name": "lvl", "value": { "calc": { "func": "*", "values": [ { "field_path": "level.value" }, { "value": 0.5 } ] } } },
+				{ "name": "ability", "value": { "field_path": "abilities.mod.name/cha.value" } },
+				{ "name": "training", "value": 5 },
+			]
+		},
+		{ "name": "thievery", "value": 0,
+			"bonuses": [
+				{ "name": "lvl", "value": { "calc": { "func": "*", "values": [ { "field_path": "level.value" }, { "value": 0.5 } ] } } },
+				{ "name": "ability", "value": { "field_path": "abilities.mod.name/dex.value" } },
+				{ "name": "misc", "value": { "field_path": "class.feaures.name/skill_versatility.effect.value" } }
+			]
+		}
+	],
+	"senses": [
+		{ "name": "insight", "base": 10, "value": 0,
+			"bonuses": [
+				{ "name": "skill", "value": { "field_path": "skills.name/insight.value" } }
+			]
+		},
+		{ "name": "perception", "base": 10, "value": 0,
+			"bonuses": [
+				{ "name": "skill", "value": { "field_path": "skills.name/perception.value" } }
+			]
+		}
+		{ "name": "initiative", "value": 0,
+			"bonuses": [
+				{ "name": "ability", "value": { "field_path": "abilities.mod.name/dex.value" } },
+				{ "name": "lvl", "value": { "calc": { "func": "*", "values": [ { "field_path": "level.value" }, { "value": 0.5 } ] } } },
+				{ "name": "feat", "value": { "field_path": "feats.name/improved_initiative.effect.value" } }
+			]
+		}
+	],
+	"powers": [
+		
+	]
+}

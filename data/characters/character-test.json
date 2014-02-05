@@ -1,0 +1,40 @@
+{
+	"id": "character-test-01",
+	"name": "Tester",
+	"level": { "value": 1, "exp": 0 },
+	"race": {
+		"abilities": [
+			{ "name": "strength", "value": 2 }
+		]
+	},
+	"abilities": [
+		{
+			"ability": {
+				"name": "strength",
+				"value": {
+					"func": "+",
+					"values": [
+						{ "value": 10 },
+						{ "field_path": "race.abilities.name/strength.value" }
+					]
+				}
+			},
+			"mod": {
+				"name": "str",
+				"value": {
+					"func": "/",
+					"values": [
+						{
+							"func": "-",
+							"values": [
+								{ "field_path": "abilities.ability.name/strength.value" },
+								{ "value": 10 }
+							]
+						},
+						{ "value": 2 }
+					]
+				}
+			}
+		}
+	]
+}

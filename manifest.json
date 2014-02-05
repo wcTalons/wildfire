@@ -1,0 +1,15 @@
+{
+  "manifest_version": 2,
+
+  "name": "Wildfire",
+  "description": "Dungeons and Dragons Management Tool",
+  "version": "1.0",
+
+  "app": {
+    "background": {
+      "scripts": ["js/background.js"]
+    }
+  },
+
+  "permissions": []
+}

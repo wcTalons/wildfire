@@ -1,0 +1,67 @@
+/*
+---------------------------------------
+			Docks
+---------------------------------------
+*/
+.dock.hoz { width: 100%; height: auto; }
+.dock.vert { width: auto; height: 100%; }
+#app-toolbar { -webkit-app-region: drag; }
+/*
+---------------------------------------
+			Content
+---------------------------------------
+*/
+.vert-content, .hoz-content { background-image: none; transition: opacity 0.4s ease-in-out; -webkit-transition: opacity 0.4s ease-in-out; }
+.vert-content { overflow-y: auto; overflow-x: hidden; height: 100%; }
+.hoz-content { overflow-y: hidden; overflow-x: auto; width: 100%; }
+/*
+---------------------------------------
+			Actionable
+---------------------------------------
+*/
+.actions { position: absolute; right: 0; top: 0; z-index: 10; }
+.action-close:hover { background-color: #555555; color: #FFFFFF; border-radius: 10px; }
+.section-btn { font-size: 26px; }
+.radio *, .checkbox *, .radio, .checkbox, .action *, .action, .actions * { cursor: pointer; -moz-user-select: none; -webkit-user-select: none; -ms-user-select: none; user-select: none; }
+/*
+---------------------------------------
+			Controls
+---------------------------------------
+*/
+.controls.hoz .control { margin: 0 10px 0 0; }
+.controls.hoz .control:last-child { margin-right: 0; }
+.checkbox > label.checkbox-named, .radio > label.radio-named { margin-right: 5px; border-radius: 3px; padding: 4px; border: 1px solid #BDBDBD; }
+.checkbox > input[type="checkbox"]:checked+label.checkbox-named:before,
+.radio > input[type="radio"]:checked+label.radio-named:before { content: none; }
+.checkbox input[type="checkbox"]:disabled+label.checkbox-named, .radio input[type="radio"]:disabled+label.radio-named { background-color: #F5F5F5; color: #979797; cursor: not-allowed; }
+/*
+---------------------------------------
+			Arrow
+---------------------------------------
+*/
+.arrow	{ position: absolute; border: 8px solid #403F3D; z-index: 1; }
+.arrow.top, .arrow.bottom { border-right-color: transparent; border-left-color: transparent; left: calc(50% - 8px); }
+.arrow.top { border-top: none; top: -6px; }
+.arrow.bottom { border-bottom: none; bottom: -6px; }
+.arrow.right, .arrow.left { border-bottom-color: transparent; border-top-color: transparent; top: calc(50% - 8px); }
+.arrow.right { border-right: none; right: -6px; }
+.arrow.left { border-left: none; left: -6px; }
+/*
+---------------------------------------
+			Loader
+---------------------------------------
+*/
+.loader { position: absolute; top: 0; left: 0; height: 100%; width: 100%; text-align: center; background-color: rgba(24, 24, 24, 0.75); z-index: 1000; color: #FFFFFF; }
+.loader .icon-spinner { display: inline-block; position: relative; top: calc(50% - 7px); }
+.loader .icon-spinner.text-med { top: calc(50% - 9px); }
+.loader .icon-spinner.text-lg { top: calc(50% - 10px); }
+.loader .icon-spinner.text-xl { top: calc(50% - 12px); }
+.loader .icon-spinner.text-h2 { top: calc(50% - 17px); }
+/*
+---------------------------------------
+			Power Card
+---------------------------------------
+*/
+.class-power { width: 380px; }
+.class-power .header .details, .class-power .power-detail .label { line-height: 18px; }
+.class-power .power-detail .list, .class-power .power-detail .value { width: calc(100% - 112); }

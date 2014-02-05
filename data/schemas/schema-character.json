@@ -1,0 +1,21 @@
+{
+	"data_type": "character",
+	"properties": {
+		"id": { "type": "string" },
+		"name": { "type": "string" },
+		"level": {
+			"type": "object",
+			"properties": {
+				"value": { "type": "number" },
+				"exp": { "type": "number" }
+			}
+		},
+		"race": {
+			"type": "object",
+			"properties": {
+				"abilities": { "type": "array" }
+			}
+		},
+		"abilities": { "type": "array" }
+	}
+}
