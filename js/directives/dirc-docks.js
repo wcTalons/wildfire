@@ -9,7 +9,9 @@ define(['exports', 'angular'], function (exports, angular) {
 			replace: true,
 			templateUrl: formatUrl('toolbar'),
 			link: function($scope, elem, attrs) {
-				if (attrs.loadEvent) { $scope.$emit(attrs.loadEvent, { action_type: "load-complete", target_id: attrs.id }); }
+				if (attrs.loadEvent) {
+					$scope.$emit(attrs.loadEvent, { action_type: "load-complete", target_id: attrs.id });
+				}
 			}
 		};
 	};

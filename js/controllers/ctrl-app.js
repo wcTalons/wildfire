@@ -85,8 +85,10 @@ define(['exports', 'angular'], function (exports, angular) {
 
         $rootScope.safe_compile = function (elem, _scope) {
             if (!elem) { return null; }
-            
-            if (!$rootScope.$$phase) {
+
+            var phase = $rootScope.$$phase
+
+            if (!phase) {
                 _scope.$apply(($compile(elem)(_scope)));
             } else {
                 $compile(elem)(_scope);
@@ -213,6 +215,7 @@ define(['exports', 'angular'], function (exports, angular) {
                 break;
             }
         });
+        
     };
     
 });

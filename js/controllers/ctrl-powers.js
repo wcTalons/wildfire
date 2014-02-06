@@ -2,6 +2,9 @@ define(['exports', 'angular'], function (exports, angular) {
 	"use strict";
 
 	exports.main = function ($scope) {
+		var loaded_list = [],
+			failed_list = [];
+
 		$scope.power_list = [
 			{
 				id: "powerrunepriest1",

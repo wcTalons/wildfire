@@ -12,7 +12,9 @@ define(['exports', 'angular'], function (exports, angular) {
 			templateUrl: formatUrl('power-card'),
 			link: function($scope, elem, attrs) {
 				if (!attrs.source || !attrs.index) {
-					if (attrs.loadEvent) { $scope.$emit(attrs.loadEvent, { action_type: "load-complete", successful: false, id: attrs.id, index: attrs.index }); }
+					if (attrs.loadEvent) {
+						 $scope.$emit(attrs.loadEvent, { action_type: "load-complete", successful: false, id: attrs.id, index: attrs.index });
+					}
 					elem.remove();
 					return null;
 				}
@@ -92,7 +94,9 @@ define(['exports', 'angular'], function (exports, angular) {
 					break;
 				}
 				
-				if (attrs.loadEvent) { $scope.$emit(attrs.loadEvent, { action_type: "load-complete", successful: true, id: power_data.id, index: attrs.index }); }
+				if (attrs.loadEvent) {
+					$scope.$emit(attrs.loadEvent, { action_type: "load-complete", successful: true, id: power_data.id, index: attrs.index });
+				}
 			}
 		};
 	};

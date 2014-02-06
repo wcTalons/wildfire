@@ -138,7 +138,6 @@ define(['exports', 'angular'], function (exports, angular) {
 
 				function render() {
 					str_value.html($scope.current_character.locater("abilities.mod.name/str.value"));
-					console.log("$scope.current_character", $scope.current_character)
 				}
 
 				$scope.$on("character-details-view-action", function (event, args) {
@@ -167,12 +166,6 @@ define(['exports', 'angular'], function (exports, angular) {
 				
 				var loaded_list = [],
 					failed_list = [];
-				
-				$scope[attrs.source].forEach(function (data, index) {
-					var card = angular.element('<power-card id="'+data.id+'" data-source="'+attrs.source+'" data-index="'+index+'" data-load-event="character-powers-view-action"></power-card>');
-					elem.append(card);
-					$scope.$root.safe_compile(card, $scope);
-				});
 
 				$scope.$on("character-powers-view-action", function (event, args) {
 					if (!args || !args.action_type) { return null; }
@@ -204,6 +197,12 @@ define(['exports', 'angular'], function (exports, angular) {
 							}
 						break;
 					}
+				});
+
+				$scope[attrs.source].forEach(function (data, index) {
+					var card = angular.element('<power-card id="'+data.id+'" data-source="'+attrs.source+'" data-index="'+index+'" data-load-event="character-powers-view-action"></power-card>');
+					elem.append(card);
+					$scope.$root.safe_compile(card, $scope);
 				});
 			}
 		};
