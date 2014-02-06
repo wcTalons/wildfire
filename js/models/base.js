@@ -3,10 +3,10 @@ define(['exports'], function(exports) {
 	
 	exports.model = function(srvc_requester) {
 				
-		function base() {}
-		base.prototype.constructor = base;
+		function _BASE() {}
+		_BASE.prototype.constructor = _BASE;
 
-		base.prototype.calc_val = function calc_val(calc_obj) {
+		_BASE.prototype.calc_val = function calc_val(calc_obj) {
 			if (!calc_obj || !"func" in calc_obj || !"values" in calc_obj || !Array.isArray(calc_obj.values) || !calc_obj.values.length) { return null; }
 
 			function get_value(data) {
@@ -57,9 +57,9 @@ define(['exports'], function(exports) {
 
 			if (values.length) { values.map(function (data) { sum(get_value(data)); }); }
 			return calced_value;
-		}
+		};
 
-		base.prototype.locater = function locater(field_path) {
+		_BASE.prototype.locater = function locater(field_path) {
 			if (!field_path) { return null; }
 
 			var paths = field_path.split(".");
@@ -151,17 +151,17 @@ define(['exports'], function(exports) {
 			return finder(self, paths);
 		};
 
-		base.prototype.set = function set_model(data) {
+		_BASE.prototype.set = function set_model(data) {
 			if (!data) { return null; }
 			var self = this;
 
 			Object.keys(data).forEach(function (prop, index) { if (prop in self) { self[prop] = data[prop]; } else { delete self[prop]; } });
-		}
+		};
 
-		function _BASE() {}	
-		_BASE.prototype.constructor = _BASE;
+		function base() {}
+		base.prototype.constructor = base;
 
-		_BASE.prototype.define = function model_define(model, schema) {
+		base.prototype.define = function model_define(model, schema) {
 			if (!model || !schema) { return null; }
 
 			function get_schema_type(data) {
@@ -202,33 +202,50 @@ define(['exports'], function(exports) {
 			}
 
 			Object.keys(schema).forEach(function (prop, index) { model[prop] = get_schema_type(schema[prop]); });
-		}
+		};
 
-		_BASE.prototype._get_model = function get_model(schema) {
+		base.prototype._get_model = function get_model(schema) {
 			if (!schema) { return null; }
-			
+
 			var _base = new base();
 			this.define(_base, schema);
 			return _base;
-		}
+		};
 
-		_BASE.prototype._init = function model_init(params) {
+		base.prototype._init = function model_init(params) {
 			if (!params || !params.hasOwnProperty("_callback") || !this.data_type) { return null; }
 			
 			params.data_type = this.data_type;
 			srvc_requester.find_file("schema", params._callback, params);
-		}
+		};
 
-		_BASE.prototype.get = function model_get(params) {
+		base.prototype._dispatch = function model_dispatch(params) {
+			if (!params || !params.type || !params._callback) { return null; }
+			var self = this;
+			
+			switch (params.type) {
+				case "ready-check":
+					if (!params._fail_callback) {
+						params._callback();
+						console.error("ready check failed: missing params");
+						return null;
+					}
+
+					
+				break;
+			}
+		};
+
+		base.prototype.get = function model_get(params) {
 			if (!params || !params.hasOwnProperty("_callback") || !this.data_type || !this.set) { return null; }
 			
 			params.data_type = this.data_type;
 
-			if (params.hasOwnProperty("id")) {
+			if (params.hasOwnProperty("id") || params.hasOwnProperty("file_name")) {
 				srvc_requester.find_file("location", this.set, params);
 			}
-		}
+		};
 
-		return new _BASE();
+		return new base();
 	};
 });

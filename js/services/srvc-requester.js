@@ -5,7 +5,7 @@ define(['exports', 'angular'], function (exports, angular) {
 
 		var data = {
 			base_url: "/data/"
-		}
+		};
 
 		function create_url(type, call, params) {
 			if (!type || !call) { return null; }
@@ -14,11 +14,13 @@ define(['exports', 'angular'], function (exports, angular) {
 
 			switch (type) {
 				case "location":
-					if (!params || !params.hasOwnProperty("id")) { return null; }
+					if (!params || (!params.hasOwnProperty("id") && !params.hasOwnProperty("file_name"))) { return null; }
+					
+					var id = params.id ? params.id : params.file_name;
 
 					switch (call) {
 						case "character":
-							url = "characters/character-" + params.id;
+							url = "characters/character-" + id;
 						break;
 					}
 
@@ -62,7 +64,7 @@ define(['exports', 'angular'], function (exports, angular) {
 					result.headers = headers;
 					_callback(result);
 				});
-		}
+		};
 
 		return new _requester();
 	};

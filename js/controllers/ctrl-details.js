@@ -30,6 +30,6 @@ define(['exports', 'angular'], function (exports, angular) {
 			$scope.$emit("character-details-view-action", { action_type: "init-complete" });
 		}
 
-		model_character.get({ _callback: load_character, id: "test" });
+		//-- model_character.get({ _callback: load_character, file_name: "test" });
 	};
 });

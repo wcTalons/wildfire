@@ -17,6 +17,7 @@ define(['exports', 'angular'], function(exports) {
 		character.prototype = model_base;
 		character.prototype.constructor = character;
 		character.prototype.data_type = "character";
+		character.prototype.is_set = false;
 
 		character.prototype.set = function set_data(results) {
 			if (!results || !results._callback) { return null; }
@@ -36,6 +37,7 @@ define(['exports', 'angular'], function(exports) {
 					});
 				} else if (results.data.hasOwnProperty("id")) {
 					var new_character = new _CHARACTER();
+					console.log("new_character", new_character);
 					new_character.set(results.data);
 					params.data = new_character;
 				}
@@ -43,7 +45,7 @@ define(['exports', 'angular'], function(exports) {
 			}
 
 			results._callback(params);
-		}
+		};
 
 		var model_character = new character();
 		model_character._init({ _callback: set_model });
