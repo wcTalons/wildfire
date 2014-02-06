@@ -6,16 +6,145 @@
 		"level": {
 			"type": "object",
 			"properties": {
-				"value": { "type": "number" },
-				"exp": { "type": "number" }
+				"exp": { "type": "number" },
+				"value": {
+					"type": "object",
+					"properties": {
+						"func": { "type": "string" },
+						"values": { "type": "array" }
+					}
+				}
 			}
 		},
+		"gender": { "type": "number" },
+		"age": { "type": "number" },
+		"height": { "type": "number" },
+		"weight": { "type": "number" },
+		"alignment": {
+			"type": "object",
+			"properties": {
+				"type": { "type": "number" },
+				"side": { "type": "number" }
+			}
+		},
+		"deity": { "type": "string" },
+		"affiliations": { "type": "array" },
 		"race": {
 			"type": "object",
 			"properties": {
-				"abilities": { "type": "array" }
+				"name": { "type": "string" },
+				"size": { "type": "number" },
+				"speed": { "type": "number" },
+				"sight_types": { "type": "array" },
+				"languages": { "type": "array" },
+				"abilities": { "type": "array" },
+				"skills": { "type": "array" },
+
 			}
 		},
-		"abilities": { "type": "array" }
+		"class": {
+			"type": "object",
+			"properties": {
+				"name": { "type": "string" },
+				"defenses": { "type": "array" },
+				"health": {
+					"type": "object",
+					"properties": {
+						"value": { "type": "number" },
+						"level_value": { "type": "number" },
+						"surges_total": { "type": "number" }
+					}
+				}
+			}
+		},
+		"abilities": { "type": "array" },
+		"defenses": { "type": "array" },
+		"skills": { "type": "array" },
+		"health": {
+			"type": "object",
+			"properties": {
+				"total": {
+					"type": "object",
+					"properties": {
+						"value": {
+							"type": "object",
+							"properties": {
+								"func": { "type": "string" },
+								"values": { "type": "array" }
+							}
+						}
+					}
+				},
+				"surges_total": {
+					"type": "object",
+					"properties": {
+						"value": {
+							"type": "object",
+							"properties": {
+								"func": { "type": "string" },
+								"values": { "type": "array" }
+							}
+						}
+					}
+				},
+				"surge_val": {
+					"type": "object",
+					"properties": {
+						"value": {
+							"type": "object",
+							"properties": {
+								"func": { "type": "string" },
+								"values": { "type": "array" }
+							}
+						}
+					}
+				},
+				"current_health": { "type": "number" },
+				"temp_health": { "type": "number" },
+				"current_surges": { "type": "number" },
+				"action_points": { "type": "number" }
+			}
+		},
+		"senses": {
+			"type": "object",
+			"properties": {
+				"insight": {
+					"type": "object",
+					"properties": {
+						"value": {
+							"type": "object",
+							"properties": {
+								"func": { "type": "string" },
+								"values": { "type": "array" }
+							}
+						}
+					}
+				},
+				"perception": {
+					"type": "object",
+					"properties": {
+						"value": {
+							"type": "object",
+							"properties": {
+								"func": { "type": "string" },
+								"values": { "type": "array" }
+							}
+						}
+					}
+				},
+				"initiative": {
+					"type": "object",
+					"properties": {
+						"value": {
+							"type": "object",
+							"properties": {
+								"func": { "type": "string" },
+								"values": { "type": "array" }
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 }

@@ -1,11 +1,65 @@
 {
-	"id": "character-test-01",
-	"name": "Tester",
-	"level": { "value": 1, "exp": 0 },
+	"id": "character-01",
+	"name": "reptar-test",
+	"level": {
+		"exp": 1000,
+		"value": {
+			"func": "+",
+			"values": [
+				{
+					"func": "%",
+					"values": [
+						{ "field_path": "level.exp" },
+						{ "value": 1000 }
+					]
+				}
+				{
+					"func": "*",
+					"values": [
+						{
+							"func": "%",
+							"values": [
+								{ "field_path": "level.exp" },
+								{ "value": 1000 }
+							] 
+						}
+						{ "value": 250 }
+					]
+				}
+			]
+		},
+	},
+	"gender": 1,
+	"age": 27,
+	"height": 198,
+	"weight": 295,
+	"alignment": { "type": 2, "side": 1 },
+	"deity": "",
+	"affiliations": [
+		{ "name": "The Fellowship of Five Fantastically Fabolous Freinds of Freindship" }
+	],
 	"race": {
+		"name": "dragonborn",
+		"size": 3,
+		"speed": 6,
+		"sight_types": ["normal"],
+		"languages": ["common", "draconic"],
 		"abilities": [
-			{ "name": "strength", "value": 2 }
+			{ "name": "constitution", "value": 2 },
+			{ "name": "charisma", "value": 2 }
+		],
+		"skills": [
+			{ "name": "history", "value": 2 },
+			{ "name": "intimidate", "value": 2 },
 		]
+	},
+	"class": {
+		"name": "Bard",
+		"defenses": [
+			{ "name": "ref", "value": 1 },
+			{ "name": "will", "value": 1 }
+		],
+		"health": { "value": 12, "level_value": 5, "surges_total": 7 }
 	},
 	"abilities": [
 		{
@@ -14,8 +68,7 @@
 				"value": {
 					"func": "+",
 					"values": [
-						{ "value": 10 },
-						{ "field_path": "race.abilities.name/strength.value" }
+						{ "value": 10 }
 					]
 				}
 			},
@@ -24,17 +77,460 @@
 				"value": {
 					"func": "/",
 					"values": [
+						{ "func": "/", "values": [{ "field_path": "level.value" }, { "value": 2 }] },
 						{
-							"func": "-",
+							"func": "/",
 							"values": [
-								{ "field_path": "abilities.ability.name/strength.value" },
-								{ "value": 10 }
+								{
+									"func": "-",
+									"values": [
+										{ "field_path": "abilities.ability.name/strength.value" },
+										{ "value": 10 }
+									]
+								},
+								{ "value": 2 }
 							]
-						},
-						{ "value": 2 }
+						}
+					]
+				}
+			}
+		},
+		{
+			"ability": {
+				"name": "constitution",
+				"value": {
+					"func": "+",
+					"values": [
+						{ "value": 12 },
+						{ "field_path": "race.abilities.name/constitution.value" }
+					]
+				}
+			},
+			"mod": {
+				"name": "con",
+				"value": {
+					"func": "/",
+					"values": [
+						{ "func": "/", "values": [{ "field_path": "level.value" }, { "value": 2 }] },
+						{
+							"func": "/",
+							"values": [
+								{
+									"func": "-",
+									"values": [
+										{ "field_path": "abilities.ability.name/constitution.value" },
+										{ "value": 10 }
+									]
+								},
+								{ "value": 2 }
+							]
+						}
+					]
+				}
+			}
+		},
+		{
+			"ability": {
+				"name": "dexterity",
+				"value": {
+					"func": "+",
+					"values": [
+						{ "value": 11 }
+					]
+				}
+			},
+			"mod": {
+				"name": "dex",
+				"value": {
+					"func": "/",
+					"values": [
+						{ "func": "/", "values": [{ "field_path": "level.value" }, { "value": 2 }] },
+						{
+							"func": "/",
+							"values": [
+								{
+									"func": "-",
+									"values": [
+										{ "field_path": "abilities.ability.name/dexterity.value" },
+										{ "value": 10 }
+									]
+								},
+								{ "value": 2 }
+							]
+						}
+					]
+				}
+			}
+		},
+		{
+			"ability": {
+				"name": "intelligence",
+				"value": {
+					"func": "+",
+					"values": [
+						{ "value": 17 }
+					]
+				}
+			},
+			"mod": {
+				"name": "int",
+				"value": {
+					"func": "/",
+					"values": [
+						{ "func": "/", "values": [{ "field_path": "level.value" }, { "value": 2 }] },
+						{
+							"func": "/",
+							"values": [
+								{
+									"func": "-",
+									"values": [
+										{ "field_path": "abilities.ability.name/intelligence.value" },
+										{ "value": 10 }
+									]
+								},
+								{ "value": 2 }
+							]
+						}
+					]
+				}
+			}
+		},
+		{
+			"ability": {
+				"name": "wisdom",
+				"value": {
+					"func": "+",
+					"values": [
+						{ "value": 11 }
+					]
+				}
+			},
+			"mod": {
+				"name": "wis",
+				"value": {
+					"func": "/",
+					"values": [
+						{ "func": "/", "values": [{ "field_path": "level.value" }, { "value": 2 }] },
+						{
+							"func": "/",
+							"values": [
+								{
+									"func": "-",
+									"values": [
+										{ "field_path": "abilities.ability.name/wisdom.value" },
+										{ "value": 10 }
+									]
+								},
+								{ "value": 2 }
+							]
+						}
+					]
+				}
+			}
+		},
+		{
+			"ability": {
+				"name": "charisma",
+				"value": {
+					"func": "+",
+					"values": [
+						{ "value": 18 },
+						{ "field_path": "race.abilities.name/charisma.value" }
+					]
+				}
+			},
+			"mod": {
+				"name": "cha",
+				"value": {
+					"func": "+",
+					"values": [
+						{ "func": "/", "values": [{ "field_path": "level.value" }, { "value": 2 }] },
+						{
+							"func": "/",
+							"values": [
+								{
+									"func": "-",
+									"values": [
+										{ "field_path": "abilities.ability.name/charisma.value" },
+										{ "value": 10 }
+									]
+								},
+								{ "value": 2 }
+							]
+						}
 					]
 				}
 			}
 		}
-	]
+
+	],
+	"defenses": [
+		{
+			"name": "ac",
+			"value": {
+				"func": "+",
+				"values": [
+					{ "value": 10 },
+					{ "value": 2 },
+					{ "field_path": "abilities.mod.name/int.value" }
+				]
+			}
+		},
+		{
+			"name": "fort",
+			"value": {
+				"func": "+",
+				"values": [
+					{ "value": 10 },
+					{ "field_path": "abilities.mod.name/con.value" }
+				]
+			}
+		},
+		{
+			"name": "ref",
+			"value": {
+				"func": "+",
+				"values": [
+					{ "value": 10 },
+					{ "field_path": "abilities.mod.name/int.value" },
+					{ "field_path": "class.defenses.name/ref.value" }
+				]
+			}
+		},
+		{
+			"name": "will",
+			"value": {
+				"func": "+",
+				"values": [
+					{ "value": 10 },
+					{ "field_path": "abilities.mod.name/cha.value" },
+					{ "field_path": "class.defenses.name/will.value" }
+				]
+			}
+		}
+	],
+	"health": {
+		"total": {
+			"value": {
+				"func": "+",
+				"values": [
+					{ "field_path": "class.health.value" },
+					{
+						"func": "*",
+						"values": [
+							{ "field_path": "level.value" },
+							{ "field_path": "class.health.level_value" }
+						]
+					}
+				]
+			}
+		},
+		"surges_total": {
+			"value": {
+				"func": "+",
+				"values": [
+					{ "field_path": "class.health.surges_total" },
+					{ "field_path": "abilities.mod.name/con.value" }
+				]
+			}
+		},
+		"surge_val": {
+			"value": {
+				"func": "*",
+				"values": [
+					{ "field_path": "health.total.value" },
+					{ "value": 0.25 }
+				]
+			}
+		},
+		"current_health": 0,
+		"temp_health": 0,
+		"current_surges": 0,
+		"action_points": 1
+	},
+	"skills": [
+		{ 
+			"name": "acrobatics",
+			"value": {
+				"func": "+",
+				"values": [
+					{ "field_path": "abilities.mod.name/dex.value" }
+				]
+			}
+		},
+		{ 
+			"name": "arcana", 
+			"value": {
+				"func": "+",
+				"values": [
+					{ "field_path": "abilities.mod.name/int.value" }
+				]
+			}
+		},
+		{ 
+			"name": "athletics", 
+			"value": {
+				"func": "+",
+				"values": [
+					{ "field_path": "abilities.mod.name/str.value" }
+				]
+			}
+		},
+		{ 
+			"name": "bluff",
+			"value": {
+				"func": "+",
+				"values": [
+					{ "field_path": "abilities.mod.name/cha.value" }
+				]
+			}
+		},
+		{ 
+			"name": "diplomacy",
+			"value": {
+				"func": "+",
+				"values": [
+					{ "field_path": "abilities.mod.name/cha.value" }
+				]
+			}
+		},
+		{ 
+			"name": "dungeoneering",
+			"value": {
+				"func": "+",
+				"values": [
+					{ "field_path": "abilities.mod.name/wis.value" }
+				]
+			}
+		},
+		{ 
+			"name": "endurance",
+			"value": {
+				"func": "+",
+				"values": [
+					{ "field_path": "abilities.mod.name/con.value" }
+				]
+			}
+		},
+		{ 
+			"name": "heal", 
+			"value": {
+				"func": "+",
+				"values": [
+					{ "field_path": "abilities.mod.name/wis.value" }
+				]
+			}
+		},
+		{ 
+			"name": "history", 
+			"value": {
+				"func": "+",
+				"values": [
+					{ "field_path": "abilities.mod.name/int.value" },
+					{ "field_path": "race.skills.name/history.value" }
+				]
+			}
+		},
+		{ 
+			"name": "insight",
+			"value": {
+				"func": "+",
+				"values": [
+					{ "field_path": "abilities.mod.name/wis.value" }
+				]
+			}
+		},
+		{ 
+			"name": "intimidate",
+			"value": {
+				"func": "+",
+				"values": [
+					{ "field_path": "abilities.mod.name/cha.value" },
+					{ "field_path": "race.skills.name/intimidate.value" }
+				]
+			}
+		},
+		{ 
+			"name": "nature",
+			"value": {
+				"func": "+",
+				"values": [
+					{ "field_path": "abilities.mod.name/wis.value" }
+				]
+			}
+		},
+		{ 
+			"name": "perception", 
+			"value": {
+				"func": "+",
+				"values": [
+					{ "field_path": "abilities.mod.name/wis.value" }
+				]
+			}
+		},
+		{ 
+			"name": "religion", 
+			"value": {
+				"func": "+",
+				"values": [
+					{ "field_path": "abilities.mod.name/int.value" }
+				]
+			}
+		},
+		{ 
+			"name": "stealth", 
+			"value": {
+				"func": "+",
+				"values": [
+					{ "field_path": "abilities.mod.name/dex.value" }
+				]
+			}
+		},
+		{ 
+			"name": "streetwise", 
+			"value": {
+				"func": "+",
+				"values": [
+					{ "field_path": "abilities.mod.name/cha.value" }
+				]
+			}
+		},
+		{ 
+			"name": "thievery", 
+			"value": {
+				"func": "+",
+				"values": [
+					{ "field_path": "abilities.mod.name/dex.value" }
+				]
+			}
+		}
+	],
+	"senses": {
+		"insight": {
+			"value": {
+				"func": "+",
+				"values": [
+					{ "value": 10 },
+					{ "field_path": "skills.name/insight.value" }
+				]
+			}
+		},
+		"perception": {
+			"value": {
+				"func": "+",
+				"values": [
+					{ "value": 10 },
+					{ "field_path": "skills.name/perception.value" }
+				]
+			}
+		},
+		"initiative": {
+			"value": {
+				"func": "+",
+				"values": [
+					{ "field_path": "abilities.mod.name/dex.value" }
+				]
+			}
+		}
+	}
 }

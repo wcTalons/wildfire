@@ -12,6 +12,7 @@ define(['exports', 'angular'], function (exports, angular) {
 			//-- console.log("char strength value", $scope.current_character.locater("abilities.ability.name/strength.value"));
 			//-- console.log("char str value", $scope.current_character.locater("abilities.mod.name/str.value"));
 			//-- console.log("char str value", $scope.current_character.locater("abilities.*.mod.value"));
+			console.log("reptar", $scope.current_character);
 			$scope.$emit("character-details-view-action", { action_type: "init-complete" });
 		}
 
