@@ -12,7 +12,21 @@ define(['exports', 'angular'], function (exports, angular) {
 			//-- console.log("char strength value", $scope.current_character.locater("abilities.ability.name/strength.value"));
 			//-- console.log("char str value", $scope.current_character.locater("abilities.mod.name/str.value"));
 			//-- console.log("char str value", $scope.current_character.locater("abilities.*.mod.value"));
-			console.log("reptar", $scope.current_character);
+
+			function level_calc(val) {
+				var d = 1000, c = 500, b = 250, a = 125, e = 100, t = null;
+
+				//-- ((((2%lvl)+1)*g) + ((lvl-1)*b) - ((lvl-1)*g)) + ((lvl-1)*b) + (((lvl-2)*g)+((2%lvl)*b)) - ((2%lvl)*(lvl*g)) + ((2%lvl)*l);
+				console.log("exp for lvl: "+val, t );
+				//-- console.log("mod lvl", ((b*lvl)%(lvl*(g+l)))*(3%(lvl-1)));
+			}
+
+			level_calc(975);
+			level_calc(1768);
+			level_calc(3250);
+			level_calc(4753);
+			level_calc(6015);
+
 			$scope.$emit("character-details-view-action", { action_type: "init-complete" });
 		}
 

@@ -39,13 +39,20 @@ define(['exports'], function(exports) {
 						break;
 						case "/":
 							calced_value /= parseInt(val);
+							calced_value = Math.floor(calced_value);
 						break;
 						case "*":
 							calced_value *= parseInt(val);
+							calced_value = Math.floor(calced_value);
+						break;
+						case "%":
+							calced_value %= parseInt(val);
+						break;
+						default:
+							console.warn("unkown calc func", calc_obj.func);
 						break;
 					}
 				}
-				calced_value = Math.floor(calced_value);
 			}
 
 			if (values.length) { values.map(function (data) { sum(get_value(data)); }); }

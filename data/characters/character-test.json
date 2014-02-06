@@ -1,6 +1,6 @@
 {
 	"id": "character-01",
-	"name": "reptar-test",
+	"name": "Reptar",
 	"level": {
 		"exp": 1000,
 		"value": {
@@ -12,7 +12,7 @@
 						{ "field_path": "level.exp" },
 						{ "value": 1000 }
 					]
-				}
+				},
 				{
 					"func": "*",
 					"values": [
@@ -22,12 +22,12 @@
 								{ "field_path": "level.exp" },
 								{ "value": 1000 }
 							] 
-						}
+						},
 						{ "value": 250 }
 					]
 				}
 			]
-		},
+		}
 	},
 	"gender": 1,
 	"age": 27,
@@ -50,7 +50,7 @@
 		],
 		"skills": [
 			{ "name": "history", "value": 2 },
-			{ "name": "intimidate", "value": 2 },
+			{ "name": "intimidate", "value": 2 }
 		]
 	},
 	"class": {
@@ -75,7 +75,7 @@
 			"mod": {
 				"name": "str",
 				"value": {
-					"func": "/",
+					"func": "+",
 					"values": [
 						{ "func": "/", "values": [{ "field_path": "level.value" }, { "value": 2 }] },
 						{
@@ -109,7 +109,7 @@
 			"mod": {
 				"name": "con",
 				"value": {
-					"func": "/",
+					"func": "+",
 					"values": [
 						{ "func": "/", "values": [{ "field_path": "level.value" }, { "value": 2 }] },
 						{
@@ -142,7 +142,7 @@
 			"mod": {
 				"name": "dex",
 				"value": {
-					"func": "/",
+					"func": "+",
 					"values": [
 						{ "func": "/", "values": [{ "field_path": "level.value" }, { "value": 2 }] },
 						{
@@ -175,7 +175,7 @@
 			"mod": {
 				"name": "int",
 				"value": {
-					"func": "/",
+					"func": "+",
 					"values": [
 						{ "func": "/", "values": [{ "field_path": "level.value" }, { "value": 2 }] },
 						{
@@ -208,7 +208,7 @@
 			"mod": {
 				"name": "wis",
 				"value": {
-					"func": "/",
+					"func": "+",
 					"values": [
 						{ "func": "/", "values": [{ "field_path": "level.value" }, { "value": 2 }] },
 						{

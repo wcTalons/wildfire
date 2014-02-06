@@ -38,7 +38,7 @@
 				"sight_types": { "type": "array" },
 				"languages": { "type": "array" },
 				"abilities": { "type": "array" },
-				"skills": { "type": "array" },
+				"skills": { "type": "array" }
 
 			}
 		},
