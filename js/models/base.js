@@ -6,27 +6,99 @@ define(['exports'], function(exports) {
 		function _BASE() {}
 		_BASE.prototype.constructor = _BASE;
 
-		_BASE.prototype.calc_val = function calc_val(calc_obj) {
-			if (!calc_obj || !"func" in calc_obj || !"values" in calc_obj || !Array.isArray(calc_obj.values) || !calc_obj.values.length) { return null; }
+		_BASE.prototype._get_calc_value = function get_calc_value(data) {
+			if (data === null) { return null; }
 
-			function get_value(data) {
-				var new_value = 0;
+			var new_value = 0;
 
-				if ("value" in data) {
-					new_value = data.value;
-				} else if ("field_path" in data) {
-					new_value = self.locater(data.field_path);
-				} else if ("func" in data && "values" in data) {
-					new_value = self.calc_val(data);
+			switch (typeof data) {
+				case "object":
+					if ("value" in data) {
+						new_value = data.value;
+					} else if ("field_path" in data) {
+						new_value = this.locater.apply(this, [data.field_path]);
+					} else if ("func" in data && "values" in data) {
+						new_value = this.calc_val.apply(this, [data]);
+					} else if ("condition" in data) {
+						new_value = this.calc_val_check.apply(this, [data]);
+					}
+				break;
+				case "string":
+					new_value = parseInt(data);
+				break;
+				case "number":
+					new_value = data;
+				break;
+			}
+
+			return new_value;
+		};
+
+		_BASE.prototype.calc_val_check = function calc_check(check_obj) {
+			if (!check_obj || !"condition" in check_obj || !"check_val" in check_obj || (!"series" in check_obj && !"return_val" in check_obj)) { return null; }
+
+			var self = this,
+				value = 0,
+				check_val = self._get_calc_value.apply(self, [check_obj.check_val]);
+
+			function checker(val, check) {
+				if (val === null || check === null) { return null; }
+
+				var pass = false;
+
+				switch (check_obj.condition) {
+					case "LT":
+						if (val < check) { pass = true; }
+					break;
+					case "GT":
+						if (val > check) { pass = true; }
+					break;
+					case "EQ":
+						if (val == check) { pass = true; }
+					break;
+					case "LE":
+						if (val <= check) { pass = true; }
+					break;
+					case "GE":
+						if (val >= check) { pass = true; }
+					break;
 				}
 
-				return new_value;
+				return pass;
 			}
+
+			function pre_check(data) {
+				if (!data || !"check_val" in data || !"return_val" in data) { return null; }
+
+				var test_val = self._get_calc_value.apply(self, [data.check_val]);
+				return checker(check_val, test_val) ? data.return_val : false;
+			}
+
+			if (check_val !== null) {
+				var temp_val = null;
+
+				if ("series" in check_obj && Array.isArray(check_obj.series)) {
+					for (var i = 0; i < check_obj.series.length; i++) {
+						temp_val = pre_check(check_obj.series[i]);
+						if (temp_val !== null && temp_val !== false) { break; }
+					}
+				} else {
+					temp_val = pre_check(check_obj);
+				}
+
+				if (temp_val !== null && temp_val !== false) { value = temp_val; }
+			}
+
+			return value;
+		};
+
+		_BASE.prototype.calc_val = function calc_val(calc_obj) {
+			if (!calc_obj || !"func" in calc_obj || !"values" in calc_obj || !Array.isArray(calc_obj.values) || !calc_obj.values.length) { return null; }
 
 			var self = this,
 				values = calc_obj.values.slice(),
 				first_obj = values.splice(0, 1)[0],
-				calced_value = get_value(first_obj);
+				calced_value = self._get_calc_value.apply(self, [first_obj]);
 
 			function sum(val) {
 				if (val !== null) {
@@ -55,7 +127,7 @@ define(['exports'], function(exports) {
 				}
 			}
 
-			if (values.length) { values.map(function (data) { sum(get_value(data)); }); }
+			if (values.length) { values.map(function (data) { sum(self._get_calc_value.apply(self, [data])); }); }
 			return calced_value;
 		};
 
@@ -76,11 +148,7 @@ define(['exports'], function(exports) {
 				function pathing_value_check(field) {
 					switch (field) {
 						case "value":
-							if (typeof source[field] === "object" && "func" in source[field] && "values" in source[field] ) {
-								data_value = self.calc_val(source[field]);
-							} else {
-								data_value = source[field];
-							}
+							data_value = self._get_calc_value.apply(self, [source[field]]);
 						break;
 						default:
 							data_value = source[field];
@@ -97,7 +165,11 @@ define(['exports'], function(exports) {
 							if (result !== null) { data_value.push({ obj: data, index: index, parent_field: path_value, value: result }); }
 						});
 
-						if (data_value.length == 1) { data_value = data_value[0].value; }
+						if (data_value.length == 1) {
+							data_value = data_value[0].value;
+						} else if (!data_value.length) {
+							data_value = null;
+						}
 
 					} else {
 						data_value = source;
