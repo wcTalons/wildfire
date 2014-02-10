@@ -205,39 +205,6 @@ define(['exports'], function(exports) {
 			Object.keys(schema).forEach(function (prop, index) { model[prop] = get_schema_type(schema[prop]); });
 		};
 
-		base.prototype._define_model = function define_model(results) {
-			if (!results || !results.hasOwnProperty("data") || !results.data.hasOwnProperty("properties") || !results._callback || !results.call_info || !results.call_info.params || !results.call_info.params._internal_callback || !results.call_info.params._completed_call) { return null; }
-
-			var params = {},
-				_base = new _BASE();
-
-			results.call_info.params._internal_callback(_base, results.data.properties);
-			params.model = _base;
-			params.schema = results.data.properties;
-			params._callback = results.call_info.params._completed_call;
-			results._callback(params);
-		};
-
-		base.prototype._init = function model_init(params) {
-			if (!params || !params._callback) { return null; }
-			
-			params.data_type = this.data_type;
-			params._internal_callback = this._set_model;
-			params._completed_call = this._init_complete;
-			srvc_requester.find_file("schema", this._define_model, params);
-		};
-
-		base.prototype._init_complete = function model_init_complete() {
-			this.is_set = true;
-
-			if (this._get_queue.length) {
-				this._get_queue.forEach(function (params, index) {
-					this.get(params);
-				});
-				this._get_queue = [];
-			}
-		};
-
 		base.prototype.get = function model_get(params) {
 			if (!params || !params.hasOwnProperty("_callback") || !this.data_type) { return null; }
 			
@@ -247,6 +214,32 @@ define(['exports'], function(exports) {
 			if (params.hasOwnProperty("id") || params.hasOwnProperty("file_name")) {
 				srvc_requester.find_file("location", this.set, params);
 			}
+		};
+
+		base.prototype._init_complete = function model_init_complete() {
+			var self = this;
+
+			if (this._get_queue.length) {
+				this._get_queue.forEach(function (params, index) { self.get(params); });
+				this._get_queue = [];
+			}
+		};
+
+		base.prototype._define_model = function define_model(results) {
+			if (!results || !results.hasOwnProperty("data") || !results.data.hasOwnProperty("properties") || !results.call_info || !results.call_info.params || !results.call_info.params.model_handler) { return null; }
+
+			var _base = new _BASE();
+
+			results.call_info.params.model_handler._set_model(_base, results.data.properties);
+			results.call_info.params.model.prototype = _base;
+			results.call_info.params.model.prototype.constructor = results.call_info.params.model;
+			results.call_info.params.model.prototype.schema = results.data.properties;
+			results.call_info.params.model_handler.__proto__.is_set = true;
+			results.call_info.params.model_handler._init_complete();
+		};
+
+		base.prototype._init = function model_init(params) {
+			srvc_requester.find_file("schema", this._define_model, { model_handler: this, data_type: this.data_type, model: params.model });
 		};
 
 		return new base();

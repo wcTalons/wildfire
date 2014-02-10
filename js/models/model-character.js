@@ -11,16 +11,6 @@ define(['exports', 'angular'], function(exports) {
 		character.prototype.data_type = "character";
 		character.prototype.is_set = false;
 
-		
-		character.prototype.define_model = function define_character(results) {
-			if (!results.model || !results.schema) { return null; }
-			
-			_CHARACTER.prototype = results.model;
-			_CHARACTER.prototype.constructor = _CHARACTER;
-			_CHARACTER.prototype.schema = results.schema;
-			results._callback();
-		};
-
 		character.prototype.set = function set_data(results) {
 			if (!results || !results._callback) { return null; }
 
@@ -49,7 +39,7 @@ define(['exports', 'angular'], function(exports) {
 		};
 
 		var model_character = new character();
-		model_character._init({ _callback: model_character.define_model });
+		model_character._init({ model: _CHARACTER });
 
 		return model_character;
 	};
