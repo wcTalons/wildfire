@@ -4,20 +4,22 @@ define(['exports', 'angular'], function(exports) {
 	exports.model = function(srvc_requester, model_base) {
 
 		function _CHARACTER() {}
-		
-		function set_model(results) {
-			if (!results || !results.hasOwnProperty("data") || !results.data.hasOwnProperty("properties")) { return null; }
-			
-			_CHARACTER.prototype = model_character._get_model(results.data.properties);
-			_CHARACTER.prototype.constructor = _CHARACTER;
-			_CHARACTER.prototype.schema = results.data.properties;
-		}
 
 		function character() {}
 		character.prototype = model_base;
 		character.prototype.constructor = character;
 		character.prototype.data_type = "character";
 		character.prototype.is_set = false;
+
+		
+		character.prototype.define_model = function define_character(results) {
+			if (!results.model || !results.schema) { return null; }
+			
+			_CHARACTER.prototype = results.model;
+			_CHARACTER.prototype.constructor = _CHARACTER;
+			_CHARACTER.prototype.schema = results.schema;
+			results._callback();
+		};
 
 		character.prototype.set = function set_data(results) {
 			if (!results || !results._callback) { return null; }
@@ -37,7 +39,6 @@ define(['exports', 'angular'], function(exports) {
 					});
 				} else if (results.data.hasOwnProperty("id")) {
 					var new_character = new _CHARACTER();
-					console.log("new_character", new_character);
 					new_character.set(results.data);
 					params.data = new_character;
 				}
@@ -48,7 +49,7 @@ define(['exports', 'angular'], function(exports) {
 		};
 
 		var model_character = new character();
-		model_character._init({ _callback: set_model });
+		model_character._init({ _callback: model_character.define_model });
 
 		return model_character;
 	};

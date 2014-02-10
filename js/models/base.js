@@ -94,7 +94,7 @@ define(['exports'], function(exports) {
 						var d_fields = [path_value].concat(fields);
 						source.forEach(function (data, index) {
 							var result = finder(data, d_fields.slice(), path_value);
-							if (result != null) { data_value.push({ obj: data, index: index, parent_field: path_value, value: result }); }
+							if (result !== null) { data_value.push({ obj: data, index: index, parent_field: path_value, value: result }); }
 						});
 
 						if (data_value.length == 1) { data_value = data_value[0].value; }
@@ -151,7 +151,7 @@ define(['exports'], function(exports) {
 			return finder(self, paths);
 		};
 
-		_BASE.prototype.set = function set_model(data) {
+		_BASE.prototype.set = function set_data(data) {
 			if (!data) { return null; }
 			var self = this;
 
@@ -160,8 +160,9 @@ define(['exports'], function(exports) {
 
 		function base() {}
 		base.prototype.constructor = base;
+		base.prototype._get_queue = [];
 
-		base.prototype.define = function model_define(model, schema) {
+		base.prototype._set_model = function set_model(model, schema) {
 			if (!model || !schema) { return null; }
 
 			function get_schema_type(data) {
@@ -204,42 +205,44 @@ define(['exports'], function(exports) {
 			Object.keys(schema).forEach(function (prop, index) { model[prop] = get_schema_type(schema[prop]); });
 		};
 
-		base.prototype._get_model = function get_model(schema) {
-			if (!schema) { return null; }
+		base.prototype._define_model = function define_model(results) {
+			if (!results || !results.hasOwnProperty("data") || !results.data.hasOwnProperty("properties") || !results._callback || !results.call_info || !results.call_info.params || !results.call_info.params._internal_callback || !results.call_info.params._completed_call) { return null; }
 
-			var _base = new base();
-			this.define(_base, schema);
-			return _base;
+			var params = {},
+				_base = new _BASE();
+
+			results.call_info.params._internal_callback(_base, results.data.properties);
+			params.model = _base;
+			params.schema = results.data.properties;
+			params._callback = results.call_info.params._completed_call;
+			results._callback(params);
 		};
 
 		base.prototype._init = function model_init(params) {
-			if (!params || !params.hasOwnProperty("_callback") || !this.data_type) { return null; }
+			if (!params || !params._callback) { return null; }
 			
 			params.data_type = this.data_type;
-			srvc_requester.find_file("schema", params._callback, params);
+			params._internal_callback = this._set_model;
+			params._completed_call = this._init_complete;
+			srvc_requester.find_file("schema", this._define_model, params);
 		};
 
-		base.prototype._dispatch = function model_dispatch(params) {
-			if (!params || !params.type || !params._callback) { return null; }
-			var self = this;
-			
-			switch (params.type) {
-				case "ready-check":
-					if (!params._fail_callback) {
-						params._callback();
-						console.error("ready check failed: missing params");
-						return null;
-					}
+		base.prototype._init_complete = function model_init_complete() {
+			this.is_set = true;
 
-					
-				break;
+			if (this._get_queue.length) {
+				this._get_queue.forEach(function (params, index) {
+					this.get(params);
+				});
+				this._get_queue = [];
 			}
 		};
 
 		base.prototype.get = function model_get(params) {
-			if (!params || !params.hasOwnProperty("_callback") || !this.data_type || !this.set) { return null; }
+			if (!params || !params.hasOwnProperty("_callback") || !this.data_type) { return null; }
 			
 			params.data_type = this.data_type;
+			if (!this.is_set) { this._get_queue.push(params); return null; }
 
 			if (params.hasOwnProperty("id") || params.hasOwnProperty("file_name")) {
 				srvc_requester.find_file("location", this.set, params);
