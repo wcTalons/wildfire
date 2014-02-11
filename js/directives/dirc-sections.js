@@ -133,11 +133,9 @@ define(['exports', 'angular'], function (exports, angular) {
 			controller: "ctrl_details",
 			templateUrl: formatUrl("character-details"),
 			link: function($scope, elem, attrs) {
-				var character_str = angular.element(elem.children(".character-strength-mod")),
-					str_value = angular.element(character_str.children(".value"));
 
 				function render() {
-					str_value.html($scope.current_character.locater("abilities.mod.name/str.value"));
+					//-- str_value.html($scope.current_character.locater("abilities.mod.name/str.value"));
 				}
 
 				$scope.$on("character-details-view-action", function (event, args) {
