@@ -10,7 +10,7 @@
 [class*="icon-"].ul { padding-left: 0; margin-left: 2.142857142857143em; list-style-type: none; }
 [class*="icon-"].ul > li { position: relative; }
 [class*="icon-"].li { position: absolute; left: -2.142857142857143em; width: 2.142857142857143em; top: 0.14285714285714285em; text-align: center; }
-[class*="icon-"]bdr { padding: .2em .25em .15em; border: solid 0.08em #eeeeee; border-radius: .1em; }
+[class*="icon-"].bdr { padding: .2em .25em .15em; border: solid 0.08em #eeeeee; border-radius: .1em; }
 .icon-stack { position: relative; display: inline-block; width: 2em; height: 2em; line-height: 2em; vertical-align: middle; }
 .icon-glass:before { content: "\f000"; }
 .icon-music:before { content: "\f001"; }
@@ -235,7 +235,7 @@
 .icon-building-o:before { content: "\f0f7"; }
 .icon-hospital-o:before { content: "\f0f8"; }
 .icon-ambulance:before { content: "\f0f9"; }
-.icon-medkit:before { content: "\f0icon"; }
+.icon-medkit:before { content: "\f0fa"; }
 .icon-fighter-jet:before { content: "\f0fb"; }
 .icon-beer:before { content: "\f0fc"; }
 .icon-h-square:before { content: "\f0fd"; } 
